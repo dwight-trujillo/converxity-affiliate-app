@@ -344,7 +344,7 @@ Base de datos en produccion:
 - Replicas de lectura para dashboards
 - Connection pooling con PgBouncer
 
-### rotación de Secretos
+### Rotación de Secretos
 
 Procedimiento de rotación sin downtime:
 
@@ -372,6 +372,7 @@ Metricas monitoreadas:
 - Database_connections: alerta si > 80% del pool
 
 Alertas enviadas via Slack/Email/PagerDuty.
+
 
 
 

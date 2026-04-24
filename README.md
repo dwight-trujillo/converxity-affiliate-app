@@ -26,7 +26,7 @@ Datos de prueba incluidos: 5 afiliados, 25 conversiones, billing config.
 
 ### Stack y justificación
 
-Framework: Remix (React Router) - integracion nativa con Shopify OAuth y App Bridge. SSR.
+Framework: Remix (React Router) - integración nativa con Shopify OAuth y App Bridge. SSR.
 Lenguaje: TypeScript 5.7 - Type safety, detección temprana de errores.
 ORM: Prisma 5.22 - Queries type-safe, migraciónes declarativas, abstracción de BD.
 Base de Datos: SQLite (MVP) - Cero configuración, portable. Migrable a PostgreSQL sin cambios.
@@ -47,7 +47,7 @@ Plan de migración:
 ### Alternativas Descartadas
 
 ScriptTags: obsoleto en Shopify 2026
-Next.js: sin integracion nativa con Shopify OAuth
+Next.js: sin integración nativa con Shopify OAuth
 Firebase: vendor lock-in
 MongoDB: sin integridad ACID para facturación
 ---
@@ -141,7 +141,7 @@ ISO/IEC 25010 | OWASP Top 10 | IEEE 829
 ### por qué esta estructura de proyecto
 
 Elegi Remix (React Router) sobre Next.js porque:
-- Shopify ofrece integracion oficial con Remix via @shopify/shopify-app-remix
+- Shopify ofrece integración oficial con Remix via @shopify/shopify-app-remix
 - Manejo nativo de sesiónes OAuth con Shopify
 - Server-Side Rendering para mejor SEO y carga inicial
 - Nested routing para layouts de admin (dashboard, affiliates, settings)
@@ -157,7 +157,7 @@ Elegi Prisma sobre TypeORM o Sequelize porque:
 
 Next.js: Descartado porque no tiene soporte oficial de Shopify para OAuth.
 Express + REST: Descartado porque Shopify recomienda Remix para apps embebidas.
-Firebase/Firestore: Descartado por vendor lock-in y falta de integracion con Billing API.
+Firebase/Firestore: Descartado por vendor lock-in y falta de integración con Billing API.
 MongoDB: Descartado porque no ofrece transacciones ACID robustas para facturación.
 ScriptTags: Descartado porque Shopify los marco como legacy en 2026. Web Pixel es el reemplazo.
 Charges API (REST): Descartada porque GraphQL ofrece idempotencyKey nativo.
@@ -372,6 +372,7 @@ Metricas monitoreadas:
 - database_connections: alerta si > 80% del pool
 
 Alertas enviadas via Slack/Email/PagerDuty.
+
 
 
 

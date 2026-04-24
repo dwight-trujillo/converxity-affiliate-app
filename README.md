@@ -331,7 +331,7 @@ Stage 3 - Release Tag:
 Plataforma: Fly.io (edge deployment)
 
 configuración:
-- Dockerfile multi-stage para optimizar tamano de imagen
+- Dockerfile multi-stage para optimizar tamaño de imagen
 - Variables de entorno inyectadas via fly secrets
 - Health checks configurados en fly.toml (interval: 10s, timeout: 3s)
 - Auto-scaling basado en CPU/memoria
@@ -372,6 +372,7 @@ Metricas monitoreadas:
 - database_connections: alerta si > 80% del pool
 
 Alertas enviadas via Slack/Email/PagerDuty.
+
 
 
 

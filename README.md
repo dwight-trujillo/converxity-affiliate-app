@@ -162,7 +162,7 @@ MongoDB: Descartado porque no ofrece transacciones ACID robustas para facturaci�
 ScriptTags: Descartado porque Shopify los marco como legacy en 2026. Web Pixel es el reemplazo.
 Charges API (REST): Descartada porque GraphQL ofrece idempotencyKey nativo.
 
-### Como maneje la Asincronía en facturación
+### Cómo manejé la Asincronía en facturación
 
 La facturación se procesa de forma asincrona despues de recibir el evento del Web Pixel:
 
@@ -175,7 +175,7 @@ La facturación se procesa de forma asincrona despues de recibir el evento del W
    - Actualiza status a billed o retrying
 4. Si falla por rate limit, programa reintentos con backoff exponencial
 
-### Como garantizo la Idempotencia
+### Cómo garantizo la Idempotencia
 
 Tres capas de Protección contra cobros duplicados:
 
@@ -192,7 +192,7 @@ Capa 3 - Shopify Billing API:
   Shopify rechaza automáticamente cualquier UsageRecord con clave duplicada
   Esto funciona incluso si nuestro backend reintenta la misma operación
 
-### Como adaptaria la solución para alta concurrencia (Black Friday)
+### Cómo adaptaría la solución para alta concurrencia (Black Friday)
 
 Para 1,000+ tiendas procesando miles de eventos/minuto:
 
@@ -235,7 +235,7 @@ una tienda tiene exactamente una configuración de billing activa.
 AuditLog: Registro de auditoría para compliance ISO 27001. Inmutable, solo
 inserciónes. Permite reconstruir el historial de cualquier entidad.
 
-### Como garantizo integridad bajo carga
+### Cómo garantizo integridad bajo carga
 
 1. Transacciones ACID via Prisma  para operaciónes multi-tabla
 2. Constraints UNIQUE que previenen duplicados a nivel de motor de BD
@@ -243,7 +243,7 @@ inserciónes. Permite reconstruir el historial de cualquier entidad.
 4. WAL (Write-Ahead Logging) en SQLite/PostgreSQL para recuperación ante fallos
 5. Connection pooling con PgBouncer en produccion (10,000+ conexiónes)
 
-### Como garantizo rapidez de consultas
+### Cómo garantizo rapidez de consultas
 
 Indices estrategicos:
 - UNIQUE(orderId, affiliateId): busqueda O(log n) para verificación de Idempotencia
@@ -372,6 +372,7 @@ Metricas monitoreadas:
 - database_connections: alerta si > 80% del pool
 
 Alertas enviadas via Slack/Email/PagerDuty.
+
 
 
 

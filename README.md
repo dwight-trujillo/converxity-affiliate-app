@@ -211,7 +211,7 @@ Para 1,000+ tiendas procesando miles de eventos/minuto:
    - CDC con Debezium + Kafka para sincronizar en tiempo real
 
 4. Cache agresivo:
-   - Redis para metricas de dashboard (TTL 5 minutos)
+   - Redis para Métricas de dashboard (TTL 5 minutos)
    - CDN para assets estaticos
 
 ---
@@ -364,7 +364,7 @@ Endpoint GET /api/health verifica:
 Respuesta 200: { status: healthy, database: true, uptime: 3600 }
 Respuesta 503: { status: degraded, database: false }
 
-Metricas monitoreadas:
+Métricas monitoreadas:
 - Billing_success_rate: alerta si < 95%
 - Retry_queue_depth: alerta si > 100
 - Api_latency_p99: alerta si > 2s
@@ -372,6 +372,7 @@ Metricas monitoreadas:
 - Database_connections: alerta si > 80% del pool
 
 Alertas enviadas via Slack/Email/PagerDuty.
+
 
 
 

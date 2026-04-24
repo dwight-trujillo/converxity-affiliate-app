@@ -35,7 +35,7 @@ facturación: Billing API GraphQL - Usage Charges con idempotencyKey nativo.
 
 ### Por qué SQLite para MVP
 
-No requiere servidor de BD separado. Archivo unico portable.
+No requiere servidor de BD separado. Archivo único portable.
 Prisma abstrae el provider: migrar a PostgreSQL es cambiar una linea.
 
 Plan de migración:
@@ -239,7 +239,7 @@ inserciónes. Permite reconstruir el historial de cualquier entidad.
 
 1. Transacciones ACID via Prisma  para operaciónes multi-tabla
 2. Constraints UNIQUE que previenen duplicados a nivel de motor de BD
-3. IdempotencyKey unico en cada Conversion
+3. IdempotencyKey único en cada Conversion
 4. WAL (Write-Ahead Logging) en SQLite/PostgreSQL para recuperación ante fallos
 5. Connection pooling con PgBouncer en produccion (10,000+ conexiónes)
 
@@ -372,6 +372,7 @@ Metricas monitoreadas:
 - database_connections: alerta si > 80% del pool
 
 Alertas enviadas via Slack/Email/PagerDuty.
+
 
 
 

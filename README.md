@@ -33,7 +33,7 @@ Base de Datos: SQLite (MVP) - Cero configuración, portable. Migrable a PostgreS
 Tracking: Web Pixel API - Nativo Shopify 2026. Sustituye a ScriptTags legacy.
 facturación: Billing API GraphQL - Usage Charges con idempotencyKey nativo.
 
-### Por que SQLite para MVP
+### Por qué SQLite para MVP
 
 No requiere servidor de BD separado. Archivo unico portable.
 Prisma abstrae el provider: migrar a PostgreSQL es cambiar una linea.
@@ -138,7 +138,7 @@ ISO/IEC 25010 | OWASP Top 10 | IEEE 829
 
 ## 1. Decisiones de Arquitectura - justificación Completa
 
-### Por que esta estructura de proyecto
+### por qué esta estructura de proyecto
 
 Elegi Remix (React Router) sobre Next.js porque:
 - Shopify ofrece integracion oficial con Remix via @shopify/shopify-app-remix
@@ -372,4 +372,5 @@ Metricas monitoreadas:
 - database_connections: alerta si > 80% del pool
 
 Alertas enviadas via Slack/Email/PagerDuty.
+
 

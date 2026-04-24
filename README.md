@@ -281,7 +281,7 @@ Esto garantiza que NUNCA se pierde un evento y NUNCA se cobra doble.
 
 ## 3. Sustentacion de DevOps
 
-### gestión de Entornos (Seccion 3.E)
+### Gestión de Entornos (Seccion 3.E)
 
 Development:
 - App Shopify en modo desarrollo en Partner Dashboard
@@ -372,6 +372,7 @@ Métricas monitoreadas:
 - Database_connections: alerta si > 80% del pool
 
 Alertas enviadas via Slack/Email/PagerDuty.
+
 
 
 

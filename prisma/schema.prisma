@@ -1,0 +1,95 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Session {
+  id           String   @id
+  shop         String
+  state        String
+  isOnline     Boolean  @default(false)
+  accessToken  String?
+  scope        String?
+  expires      DateTime?
+  onlineAccessInfo String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([shop])
+}
+
+model Affiliate {
+  id             Int          @id @default(autoincrement())
+  shopDomain     String
+  name           String
+  email          String
+  refId          String       @unique
+  commissionRate Float        @default(5.0)
+  isActive       Boolean      @default(true)
+  notes          String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  conversions    Conversion[]
+
+  @@unique([shopDomain, email])
+  @@index([shopDomain])
+  @@index([shopDomain, refId])
+}
+
+model BillingConfig {
+  id              Int       @id @default(autoincrement())
+  shopDomain      String    @unique
+  subscriptionId  String    @unique
+  cappedAmount    Float
+  planName        String    @default("Capped Amount")
+  isActive        Boolean   @default(true)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([shopDomain])
+}
+
+model Conversion {
+  id              String    @id
+  shopDomain      String
+  orderId         String
+  orderTotal      Float
+  currency        String    @default("USD")
+  affiliateId     Int
+  affiliate       Affiliate @relation(fields: [affiliateId], references: [id], onDelete: Cascade)
+  commissionRate  Float
+  commissionAmt   Float
+  platformFee     Float
+  usageRecordId   String?
+  status          String    @default("pending")
+  retryCount      Int       @default(0)
+  errorMessage    String?
+  idempotencyKey  String    @unique
+  processedAt     DateTime?
+  createdAt       DateTime  @default(now())
+
+  @@unique([orderId, affiliateId])
+  @@index([shopDomain])
+  @@index([shopDomain, createdAt])
+  @@index([status, retryCount])
+  @@index([processedAt])
+}
+
+model AuditLog {
+  id         String   @id
+  shopDomain String?
+  action     String
+  entity     String
+  entityId   String
+  details    String
+  ipAddress  String?
+  createdAt  DateTime @default(now())
+
+  @@index([shopDomain, createdAt])
+  @@index([action, createdAt])
+  @@index([entity, entityId])
+}

@@ -18,7 +18,7 @@ npm run dev -- --port 5000
 
 Abrir http://localhost:5000
 
-Datos de prueba incluidos: 5 afiliados, 25 conversiones, billing config.
+Datos de prueba incluidos: 5 afiliados, 25 conversiónes, billing config.
 
 ---
 
@@ -77,7 +77,7 @@ Backoff exponencial con jitter para rate limits (HTTP 429)
 
 ### Esquema
 Affiliate: id, shopDomain, name, email, refId, commissionRate, isActive
-Conversion: id, orderId, orderTotal, platformFee(5%), status, idempotencyKey, usageRecordId
+Conversión: id, orderId, orderTotal, platformFee(5%), status, idempotencyKey, usageRecordId
 BillingConfig: shopDomain, subscriptionId, cappedAmount
 AuditLog: action, entity, entityId, details (ISO 27001)
 
@@ -110,7 +110,7 @@ CI/CD GitHub Actions:
 2. Push to main: build + deploy Staging
 3. Release: deploy Production Blue/Green + health checks
 
-Despliegue Blue/Green: nueva version se prueba antes de redirigir trafico. Rollback instantaneo.
+Despliegue Blue/Green: nueva versión se prueba antes de redirigir trafico. Rollback instantaneo.
 Secretos: nunca en codigo, inyectados via Fly.io secrets. rotación cada 90 dias.
 
 ---
@@ -167,9 +167,9 @@ Charges API (REST): Descartada porque GraphQL ofrece idempotencyKey nativo.
 La facturación se procesa de forma asincrona despues de recibir el evento del Web Pixel:
 
 1. El Web Pixel envia el evento checkout_completed al backend
-2. El backend valida el payload y persiste la Conversion (status: pending)
+2. El backend valida el payload y persiste la Conversión (status: pending)
 3. Se dispara processBillingAsync() que ejecuta en background:
-   - Lee la Conversion de la BD
+   - Lee la Conversión de la BD
    - Obtiene el subscriptionId del BillingConfig
    - Llama a usageRecordCreate con idempotencyKey
    - Actualiza status a billed o retrying
@@ -180,11 +180,11 @@ La facturación se procesa de forma asincrona despues de recibir el evento del W
 Tres capas de Protección contra cobros duplicados:
 
 Capa 1 - Base de Datos:
-  CONSTRAINT UNIQUE (orderId, affiliateId) en tabla Conversion
+  CONSTRAINT UNIQUE (orderId, affiliateId) en tabla Conversión
   Previene inserciónes duplicadas a nivel de motor de BD
 
 Capa 2 - Logica de Aplicación:
-  SELECT verifica si existe Conversion antes de INSERT
+  SELECT verifica si existe Conversión antes de INSERT
   Si existe, retorna el ID existente sin crear otro registro
 
 Capa 3 - Shopify Billing API:
@@ -222,10 +222,10 @@ Para 1,000+ tiendas procesando miles de eventos/minuto:
 
 El esquema tiene 4 tablas con separacion clara de responsabilidades:
 
-Affiliate: Entidad de negocio principal. Separada de Conversion para evitar
-redundancia. La relación 1:N permite que un afiliado tenga muchas conversiones.
+Affiliate: Entidad de negocio principal. Separada de Conversión para evitar
+redundancia. La relación 1:N permite que un afiliado tenga muchas conversiónes.
 
-Conversion: Registro inmutable de cada venta referida. Contiene tanto la
+Conversión: Registro inmutable de cada venta referida. Contiene tanto la
 comisión del afiliado como el platformFee (5%). El campo status permite
 trazabilidad del ciclo de facturación.
 
@@ -239,7 +239,7 @@ inserciónes. Permite reconstruir el historial de cualquier entidad.
 
 1. Transacciones ACID via Prisma  para operaciónes multi-tabla
 2. Constraints UNIQUE que previenen duplicados a nivel de motor de BD
-3. IdempotencyKey único en cada Conversion
+3. IdempotencyKey único en cada Conversión
 4. WAL (Write-Ahead Logging) en SQLite/PostgreSQL para recuperación ante fallos
 5. Connection pooling con PgBouncer en produccion (10,000+ conexiónes)
 
@@ -248,7 +248,7 @@ inserciónes. Permite reconstruir el historial de cualquier entidad.
 Indices estrategicos:
 - UNIQUE(orderId, affiliateId): busqueda O(log n) para verificación de Idempotencia
 - INDEX(shopDomain, createdAt): consultas de dashboard filtradas por tienda y fecha
-- INDEX(status, retryCount): worker de reintentos encuentra conversiones pendientes
+- INDEX(status, retryCount): worker de reintentos encuentra conversiónes pendientes
 - INDEX(refId): busqueda O(log n) de afiliado durante tracking
 
 ### Estrategia para millones de registros
@@ -269,10 +269,10 @@ El flujo garantiza consistencia:
 
 1. El Web Pixel envia el evento con orderId, total y affiliateRef
 2. El backend valida HMAC del payload (integridad en transito)
-3. Crea Conversion ATOMICAMENTE (pending) antes de facturar
-4. Solo si la Conversion se persistio exitosamente, procede a Billing API
-5. Si Billing API falla, la Conversion queda en estado retrying
-6. El worker de reintentos procesa las conversiones retrying
+3. Crea Conversión ATOMICAMENTE (pending) antes de facturar
+4. Solo si la Conversión se persistio exitosamente, procede a Billing API
+5. Si Billing API falla, la Conversión queda en estado retrying
+6. El worker de reintentos procesa las conversiónes retrying
 7. La idempotencyKey asegura que aunque el worker reintente, no se cobra doble
 
 Esto garantiza que NUNCA se pierde un evento y NUNCA se cobra doble.
@@ -368,10 +368,11 @@ Metricas monitoreadas:
 - billing_success_rate: alerta si < 95%
 - retry_queue_depth: alerta si > 100
 - api_latency_p99: alerta si > 2s
-- failed_conversions_rate: alerta si > 1%
+- failed_conversións_rate: alerta si > 1%
 - database_connections: alerta si > 80% del pool
 
 Alertas enviadas via Slack/Email/PagerDuty.
+
 
 
 

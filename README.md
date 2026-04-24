@@ -28,7 +28,7 @@ Datos de prueba incluidos: 5 afiliados, 25 conversiones, billing config.
 
 Framework: Remix (React Router) - integración nativa con Shopify OAuth y App Bridge. SSR.
 Lenguaje: TypeScript 5.7 - Type safety, detección temprana de errores.
-ORM: Prisma 5.22 - Queries type-safe, migraciónes declarativas, abstracción de BD.
+ORM: Prisma 5.22 - Queries type-safe, migraciones declarativas, abstracción de BD.
 Base de Datos: SQLite (MVP) - Cero configuración, portable. Migrable a PostgreSQL sin cambios.
 Tracking: Web Pixel API - Nativo Shopify 2026. Sustituye a ScriptTags legacy.
 facturación: Billing API GraphQL - Usage Charges con idempotencyKey nativo.
@@ -149,7 +149,7 @@ Elegi Remix (React Router) sobre Next.js porque:
 
 Elegi Prisma sobre TypeORM o Sequelize porque:
 - Type safety completo (tipos generados automáticamente del schema)
-- migraciónes declarativas sin SQL manual
+- migraciones declarativas sin SQL manual
 - abstracción de BD: mismo codigo para SQLite (dev) y PostgreSQL (prod)
 - Mejor DX con Prisma Studio y autocompletado
 
@@ -372,6 +372,7 @@ Metricas monitoreadas:
 - database_connections: alerta si > 80% del pool
 
 Alertas enviadas via Slack/Email/PagerDuty.
+
 
 
 

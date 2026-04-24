@@ -26,9 +26,9 @@ Datos de prueba incluidos: 5 afiliados, 25 conversiones, billing config.
 
 ### Stack y justificación
 
-Framework: Remix (React Router) - Integracion nativa con Shopify OAuth y App Bridge. SSR.
-Lenguaje: TypeScript 5.7 - Type safety, deteccion temprana de errores.
-ORM: Prisma 5.22 - Queries type-safe, migraciónes declarativas, abstraccion de BD.
+Framework: Remix (React Router) - integracion nativa con Shopify OAuth y App Bridge. SSR.
+Lenguaje: TypeScript 5.7 - Type safety, detección temprana de errores.
+ORM: Prisma 5.22 - Queries type-safe, migraciónes declarativas, abstracción de BD.
 Base de Datos: SQLite (MVP) - Cero configuración, portable. Migrable a PostgreSQL sin cambios.
 Tracking: Web Pixel API - Nativo Shopify 2026. Sustituye a ScriptTags legacy.
 facturación: Billing API GraphQL - Usage Charges con idempotencyKey nativo.
@@ -57,7 +57,7 @@ MongoDB: sin integridad ACID para facturación
 ### Problema
 El Web Pixel puede enviar eventos checkout_completed duplicados. La Billing API jamas debe recibir cargos duplicados.
 
-### solución: 3 Capas de Proteccion
+### solución: 3 Capas de Protección
 
 Capa 1 - BD: CONSTRAINT UNIQUE (orderId, affiliateId)
 Capa 2 - Codigo: SELECT antes de INSERT verifica existencia
@@ -111,15 +111,15 @@ CI/CD GitHub Actions:
 3. Release: deploy Production Blue/Green + health checks
 
 Despliegue Blue/Green: nueva version se prueba antes de redirigir trafico. Rollback instantaneo.
-Secretos: nunca en codigo, inyectados via Fly.io secrets. Rotacion cada 90 dias.
+Secretos: nunca en codigo, inyectados via Fly.io secrets. rotación cada 90 dias.
 
 ---
 
 ## Seguridad
 
-OWASP Top 10: validacion de inputs, sanitizacion XSS, prepared statements (Prisma)
+OWASP Top 10: validación de inputs, sanitizacion XSS, prepared statements (Prisma)
 HMAC-SHA256: firma de payloads del Web Pixel para integridad
-AuditLog: registro de todas las operaciones (ISO 27001)
+AuditLog: registro de todas las operaciónes (ISO 27001)
 Cookies: SameSite=Lax, Secure, HttpOnly
 refId: solo [A-Za-z0-9_-], max 50 caracteres
 
@@ -142,7 +142,7 @@ ISO/IEC 25010 | OWASP Top 10 | IEEE 829
 
 Elegi Remix (React Router) sobre Next.js porque:
 - Shopify ofrece integracion oficial con Remix via @shopify/shopify-app-remix
-- Manejo nativo de sesiones OAuth con Shopify
+- Manejo nativo de sesiónes OAuth con Shopify
 - Server-Side Rendering para mejor SEO y carga inicial
 - Nested routing para layouts de admin (dashboard, affiliates, settings)
 - App Bridge integrado para comunicacion con el admin de Shopify
@@ -150,7 +150,7 @@ Elegi Remix (React Router) sobre Next.js porque:
 Elegi Prisma sobre TypeORM o Sequelize porque:
 - Type safety completo (tipos generados automáticamente del schema)
 - migraciónes declarativas sin SQL manual
-- Abstraccion de BD: mismo codigo para SQLite (dev) y PostgreSQL (prod)
+- abstracción de BD: mismo codigo para SQLite (dev) y PostgreSQL (prod)
 - Mejor DX con Prisma Studio y autocompletado
 
 ### Alternativas consideradas y descartadas
@@ -177,11 +177,11 @@ La facturación se procesa de forma asincrona despues de recibir el evento del W
 
 ### Como garantizo la Idempotencia
 
-Tres capas de proteccion contra cobros duplicados:
+Tres capas de Protección contra cobros duplicados:
 
 Capa 1 - Base de Datos:
   CONSTRAINT UNIQUE (orderId, affiliateId) en tabla Conversion
-  Previene inserciones duplicadas a nivel de motor de BD
+  Previene inserciónes duplicadas a nivel de motor de BD
 
 Capa 2 - Logica de Aplicación:
   SELECT verifica si existe Conversion antes de INSERT
@@ -190,7 +190,7 @@ Capa 2 - Logica de Aplicación:
 Capa 3 - Shopify Billing API:
   idempotencyKey = SHA-256(orderId + affiliateId + subscriptionId)
   Shopify rechaza automáticamente cualquier UsageRecord con clave duplicada
-  Esto funciona incluso si nuestro backend reintenta la misma operacion
+  Esto funciona incluso si nuestro backend reintenta la misma operación
 
 ### Como adaptaria la solución para alta concurrencia (Black Friday)
 
@@ -223,30 +223,30 @@ Para 1,000+ tiendas procesando miles de eventos/minuto:
 El esquema tiene 4 tablas con separacion clara de responsabilidades:
 
 Affiliate: Entidad de negocio principal. Separada de Conversion para evitar
-redundancia. La relacion 1:N permite que un afiliado tenga muchas conversiones.
+redundancia. La relación 1:N permite que un afiliado tenga muchas conversiones.
 
 Conversion: Registro inmutable de cada venta referida. Contiene tanto la
-comision del afiliado como el platformFee (5%). El campo status permite
+comisión del afiliado como el platformFee (5%). El campo status permite
 trazabilidad del ciclo de facturación.
 
 BillingConfig: configuración por tienda de la suscripcion. Separada porque
 una tienda tiene exactamente una configuración de billing activa.
 
 AuditLog: Registro de auditoría para compliance ISO 27001. Inmutable, solo
-inserciones. Permite reconstruir el historial de cualquier entidad.
+inserciónes. Permite reconstruir el historial de cualquier entidad.
 
 ### Como garantizo integridad bajo carga
 
-1. Transacciones ACID via Prisma  para operaciones multi-tabla
+1. Transacciones ACID via Prisma  para operaciónes multi-tabla
 2. Constraints UNIQUE que previenen duplicados a nivel de motor de BD
 3. IdempotencyKey unico en cada Conversion
-4. WAL (Write-Ahead Logging) en SQLite/PostgreSQL para recuperacion ante fallos
-5. Connection pooling con PgBouncer en produccion (10,000+ conexiones)
+4. WAL (Write-Ahead Logging) en SQLite/PostgreSQL para recuperación ante fallos
+5. Connection pooling con PgBouncer en produccion (10,000+ conexiónes)
 
 ### Como garantizo rapidez de consultas
 
 Indices estrategicos:
-- UNIQUE(orderId, affiliateId): busqueda O(log n) para verificacion de Idempotencia
+- UNIQUE(orderId, affiliateId): busqueda O(log n) para verificación de Idempotencia
 - INDEX(shopDomain, createdAt): consultas de dashboard filtradas por tienda y fecha
 - INDEX(status, retryCount): worker de reintentos encuentra conversiones pendientes
 - INDEX(refId): busqueda O(log n) de afiliado durante tracking
@@ -259,7 +259,7 @@ particiónamiento por shopDomain en PostgreSQL:
 - VACUUM y ANALYZE por partición, no sobre toda la tabla
 
 CQRS para analítica:
-- PostgreSQL para operaciones transaccionales (inserciones rapidas)
+- PostgreSQL para operaciónes transaccionales (inserciónes rapidas)
 - ClickHouse para dashboards (consultas agregadas en ms sobre billones de filas)
 - CDC con Debezium para replicar datos en tiempo real sin carga extra en OLTP
 
@@ -344,9 +344,9 @@ Base de datos en produccion:
 - Replicas de lectura para dashboards
 - Connection pooling con PgBouncer
 
-### Rotacion de Secretos
+### rotación de Secretos
 
-Procedimiento de rotacion sin downtime:
+Procedimiento de rotación sin downtime:
 
 1. Generar nuevo secreto: openssl rand -hex 32
 2. Agregar como nuevo secreto: fly secrets set HMAC_SECRET_NEW=xxx
@@ -358,7 +358,7 @@ Procedimiento de rotacion sin downtime:
 ### Health Checks y Monitoreo
 
 Endpoint GET /api/health verifica:
-- Conexion a base de datos (SELECT 1)
+- conexión a base de datos (SELECT 1)
 - Tiempo de respuesta
 
 Respuesta 200: { status: healthy, database: true, uptime: 3600 }
@@ -372,5 +372,6 @@ Metricas monitoreadas:
 - database_connections: alerta si > 80% del pool
 
 Alertas enviadas via Slack/Email/PagerDuty.
+
 
 

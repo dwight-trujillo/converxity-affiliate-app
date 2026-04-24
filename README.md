@@ -218,7 +218,7 @@ Para 1,000+ tiendas procesando miles de eventos/minuto:
 
 ## 2. Sustentacion de Base de Datos
 
-### justificación TÉCNICA del esquema
+### Justificación TÉCNICA del esquema
 
 El esquema tiene 4 tablas con separacion clara de responsabilidades:
 
@@ -372,6 +372,7 @@ Métricas monitoreadas:
 - Database_connections: alerta si > 80% del pool
 
 Alertas enviadas via Slack/Email/PagerDuty.
+
 
 
 

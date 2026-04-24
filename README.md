@@ -26,7 +26,7 @@ Datos de prueba incluidos: 5 afiliados, 25 conversiónes, billing config.
 
 ### Stack y justificación
 
-Framework: Remix (React Router) - integración nativa con Shopify OAuth y App Bridge. SSR.
+Framework: Remix (React Router) - Integración nativa con Shopify OAuth y App Bridge. SSR.
 Lenguaje: TypeScript 5.7 - Type safety, detección temprana de errores.
 ORM: Prisma 5.22 - Queries type-safe, migraciones declarativas, abstracción de BD.
 Base de Datos: SQLite (MVP) - Cero configuración, portable. Migrable a PostgreSQL sin cambios.
@@ -149,8 +149,8 @@ Elegi Remix (React Router) sobre Next.js porque:
 
 Elegi Prisma sobre TypeORM o Sequelize porque:
 - Type safety completo (tipos generados automáticamente del schema)
-- migraciones declarativas sin SQL manual
-- abstracción de BD: mismo codigo para SQLite (dev) y PostgreSQL (prod)
+- Migraciones declarativas sin SQL manual
+- Abstracción de BD: mismo codigo para SQLite (dev) y PostgreSQL (prod)
 - Mejor DX con Prisma Studio y autocompletado
 
 ### Alternativas consideradas y descartadas
@@ -358,20 +358,21 @@ Procedimiento de rotación sin downtime:
 ### Health Checks y Monitoreo
 
 Endpoint GET /api/health verifica:
-- conexión a base de datos (SELECT 1)
+- Conexión a base de datos (SELECT 1)
 - Tiempo de respuesta
 
 Respuesta 200: { status: healthy, database: true, uptime: 3600 }
 Respuesta 503: { status: degraded, database: false }
 
 Metricas monitoreadas:
-- billing_success_rate: alerta si < 95%
-- retry_queue_depth: alerta si > 100
-- api_latency_p99: alerta si > 2s
+- Billing_success_rate: alerta si < 95%
+- Retry_queue_depth: alerta si > 100
+- Api_latency_p99: alerta si > 2s
 - failed_conversións_rate: alerta si > 1%
-- database_connections: alerta si > 80% del pool
+- Database_connections: alerta si > 80% del pool
 
 Alertas enviadas via Slack/Email/PagerDuty.
+
 
 
 

@@ -131,7 +131,7 @@ ISO/IEC 25010 | OWASP Top 10 | IEEE 829
 
 
 ============================================================
-## RESPUESTAS DETALLADAS A LA PRUEBA TECNICA
+## RESPUESTAS DETALLADAS A LA PRUEBA TÉCNICA
 ============================================================
 
 ---
@@ -218,7 +218,7 @@ Para 1,000+ tiendas procesando miles de eventos/minuto:
 
 ## 2. Sustentacion de Base de Datos
 
-### justificación tecnica del esquema
+### justificación TÉCNICA del esquema
 
 El esquema tiene 4 tablas con separacion clara de responsabilidades:
 
@@ -372,6 +372,7 @@ Metricas monitoreadas:
 - database_connections: alerta si > 80% del pool
 
 Alertas enviadas via Slack/Email/PagerDuty.
+
 
 
 
